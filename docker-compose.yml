@@ -2,36 +2,27 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:17-alpine
-    container_name: edu-platform-db
+    image: postgres:15
     environment:
       POSTGRES_DB: edu_platform
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: admin
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - education-network
 
   app:
     build: .
-    container_name: edu-platform-app
-    depends_on:
-      - postgres
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/edu_platform
-      SPRING_DATASOURCE_USERNAME: postgres
-      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/edu_platform
+      DB_USERNAME: postgres
+      DB_PASSWORD: admin
     ports:
       - "8080:8080"
-    networks:
-      - education-network
+    depends_on:
+      - postgres
 
 volumes:
   postgres_data:
-
-networks:
-  education-network:
-    driver: bridge

@@ -1,15 +1,15 @@
-FROM eclipse-temurin:17-jdk AS build
+FROM eclipse-temurin:17-jre-alpine
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y maven
+RUN addgroup -S spring && adduser -S spring -G spring
+USER spring:spring
 
-COPY pom.xml .
-COPY src src
-RUN mvn clean package -DskipTests
+COPY target/*.jar app.jar
 
-FROM eclipse-temurin:17-jre
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+ENV SPRING_PROFILES_ACTIVE=prod
+ENV JAVA_OPTS="-Xmx512m -Xms256m"
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+
+ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar /app/app.jar"]
