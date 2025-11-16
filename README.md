@@ -112,7 +112,7 @@ mvn test
 - **UpdateOperationsTest** - Тестирование обновления сущностей
 - **DeleteOperationsTest** - Тестирование удаления и каскадного удаления
 - **LazyLoadTest** - Тестирование ленивой загрузки связей
-
+## CI workflow настроен
 ## Docker запуск
 
 ```bash
