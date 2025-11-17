@@ -1,4 +1,4 @@
-package org.example.integration;
+package org.example;
 
 import org.example.entities.Course;
 import org.example.entities.Module;

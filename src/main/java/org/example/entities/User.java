@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,17 +20,20 @@ public class User {
     protected UUID id;
 
     @Column(nullable = false)
-    @NotBlank
+    @NotBlank(message = "Имя пользователя обязательно для заполнения")
+    @Size(min = 2, max = 50, message = "Имя должно содержать от 2 до 50 символов")
+    @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ\\s]+$", message = "Имя может содержать только буквы и пробелы")
     private String name;
 
     @Column(nullable = false)
-    @NotBlank
-    @Email
+    @NotBlank(message = "Email обязателен для заполнения")
+    @Email(message = "Некорректный формат email адреса")
+    @Size(max = 100, message = "Email не должен превышать 100 символов")
     private String email;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @NotNull
+    @NotNull(message = "Роль пользователя должна быть указана")
     private UserRole role;
 
     @OneToMany(mappedBy = "teacher", fetch = FetchType.LAZY)
@@ -56,85 +61,30 @@ public class User {
     @JsonIgnore
     private List<CourseReview> courseReviews = new ArrayList<>();
 
-    public UUID getId() {
-        return id;
-    }
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public UserRole getRole() {
-        return role;
-    }
-
-    public void setRole(UserRole role) {
-        this.role = role;
-    }
-
-    public List<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
-    }
-
-    public List<Enrollment> getEnrollments() {
-        return enrollments;
-    }
-
-    public void setEnrollments(List<Enrollment> enrollments) {
-        this.enrollments = enrollments;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
+    public UUID getId() { return id; }
+    public void setId(UUID id) { this.id = id; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+    public UserRole getRole() { return role; }
+    public void setRole(UserRole role) { this.role = role; }
+    public List<Course> getCourses() { return courses; }
+    public void setCourses(List<Course> courses) { this.courses = courses; }
+    public List<Enrollment> getEnrollments() { return enrollments; }
+    public void setEnrollments(List<Enrollment> enrollments) { this.enrollments = enrollments; }
+    public Profile getProfile() { return profile; }
     public void setProfile(Profile profile) {
         this.profile = profile;
         if (profile != null) {
             profile.setUser(this);
         }
     }
-    public List<Submission> getSubmissions() {
-        return submissions;
-    }
-
-    public void setSubmissions(List<Submission> submissions) {
-        this.submissions = submissions;
-    }
-
-    public List<QuizSubmission> getQuizSubmissions() {
-        return quizSubmissions;
-    }
-
-    public void setQuizSubmissions(List<QuizSubmission> quizSubmissions) {
-        this.quizSubmissions = quizSubmissions;
-    }
-
-    public List<CourseReview> getCourseReviews() {
-        return courseReviews;
-    }
-
-    public void setCourseReviews(List<CourseReview> courseReviews) {
-        this.courseReviews = courseReviews;
-    }
+    public List<Submission> getSubmissions() { return submissions; }
+    public void setSubmissions(List<Submission> submissions) { this.submissions = submissions; }
+    public List<QuizSubmission> getQuizSubmissions() { return quizSubmissions; }
+    public void setQuizSubmissions(List<QuizSubmission> quizSubmissions) { this.quizSubmissions = quizSubmissions; }
+    public List<CourseReview> getCourseReviews() { return courseReviews; }
+    public void setCourseReviews(List<CourseReview> courseReviews) { this.courseReviews = courseReviews; }
 }

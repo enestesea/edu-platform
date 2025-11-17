@@ -99,6 +99,7 @@ java -jar target/edu-platform-1.0-SNAPSHOT.jar
 ## Интеграционные тесты
 ![test1.png](test_results/test1.png)
 ![test2.png](test_results/test2.png)
+![test3.png](test_results/test3.png)
 ### Запуск тестов
 
 ```bash
